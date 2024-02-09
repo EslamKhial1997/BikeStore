@@ -1,10 +1,11 @@
 const expressAsyncHandler = require("express-async-handler");
-const createUsersModel = require("../modules/createUsers");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const ApiError = require("../Resuble/ApiErrors");
 const crypto = require("crypto");
+const createUsersModel = require("../modules/createUsers");
+const ApiError = require("../Resuble/ApiErrors");
 const sendCode = require("../Utils/SendCodeEmail");
+
 exports.SingUp = expressAsyncHandler(async (req, res) => {
   const createAuth = await createUsersModel.create({
     name: req.body.name,
@@ -31,7 +32,6 @@ exports.Login = expressAsyncHandler(async (req, res, next) => {
 });
 exports.allowedTo = (...roles) =>
   expressAsyncHandler(async (req, res, next) => {
-    console.log();
     // 1) access roles
     // 2) access registered user (req.user.role)
     if (!roles.includes(req.user.role)) {
@@ -65,7 +65,7 @@ exports.protect = expressAsyncHandler(async (req, res, next) => {
       10
     );
     // Password changed after token created (Error)
-    if (passChangedTimestamp > decoded.iat) {
+    if (passChangedTimestamp > jwt.decode.iat) {
       return next(
         new ApiError(
           "User recently changed his password. please login again..",
@@ -84,7 +84,10 @@ exports.forgetPassword = expressAsyncHandler(async (req, res, next) => {
     return next(new ApiError(`This Email ${req.body.email} Not Exist `));
   }
   const digitCode = Math.floor(100000 + Math.random() * 900000).toString();
-  var ciphertext = crypto.createHash("sha256").update(digitCode).digest("hex");
+  const ciphertext = crypto
+    .createHash("sha256")
+    .update(digitCode)
+    .digest("hex");
 
   user.passwordResthashedCode = ciphertext;
   user.passwordRestExpires = Date.now() + 10 * 60 * 1000;
@@ -110,7 +113,7 @@ exports.forgetPassword = expressAsyncHandler(async (req, res, next) => {
 });
 exports.restCodeSent = expressAsyncHandler(async (req, res, next) => {
   const restcode = req.body.restCode.toString();
-  var ciphertext = crypto.createHash("sha256").update(restcode).digest("hex");
+  const ciphertext = crypto.createHash("sha256").update(restcode).digest("hex");
   const user = await createUsersModel.findOne({
     passwordResthashedCode: ciphertext,
     passwordRestExpires: { $gt: Date.now() },
@@ -122,30 +125,38 @@ exports.restCodeSent = expressAsyncHandler(async (req, res, next) => {
   await user.save();
   res.status(200).json({ status: "success" });
 });
-exports.restNewPassword = expressAsyncHandler(async (req, res, next) => {
-  const user = await createUsersModel.findOne({
-    email: req.body.email,
+exports.restNewPassword = (UserPassword) =>
+  expressAsyncHandler(async (req, res, next) => {
+    const user = await createUsersModel.findOne({
+      email: req.body.email,
+    });
+
+    if (!user) {
+      return next(
+        new ApiError(`There is no user with email ${req.body.email}`, 404)
+      );
+    }
+
+    // 2) Check if reset code verified
+    if (!user.passwordRestVerify) {
+      return next(new ApiError("Reset code not verified", 400));
+    }
+    if (UserPassword === "password") {
+      user.password = await bcrypt.hash(req.body.restNewPassword, 12);
+    } else if (UserPassword === "passwordDB") {
+      user.passwordDB = await bcrypt.hash(req.body.restNewPassword, 12);
+    }
+
+    user.passwordResthashedCode = undefined;
+    user.passwordRestExpires = undefined;
+    user.passwordRestVerify = undefined;
+
+    await user.save();
+    if (UserPassword === "password") {
+      const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+        expiresIn: "90d",
+      });
+      res.status(200).json({ token });
+    }
+    res.status(200).json({ status: "success" });
   });
-
-  if (!user) {
-    return next(
-      new ApiError(`There is no user with email ${req.body.email}`, 404)
-    );
-  }
-
-  // 2) Check if reset code verified
-  if (!user.passwordRestVerify) {
-    return next(new ApiError("Reset code not verified", 400));
-  }
-
-  user.password = req.body.restNewPassword;
-  user.passwordResthashedCode = undefined;
-  user.passwordRestExpires = undefined;
-  user.passwordRestVerify = undefined;
-
-  await user.save();
-  const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-    expiresIn: "90d",
-  });
-  res.status(200).json({ token });
-});

@@ -130,7 +130,7 @@ exports.restNewPassword = (UserPassword) =>
     const user = await createUsersModel.findOne({
       email: req.body.email,
     });
-  
+
     if (!user) {
       return next(
         new ApiError(`There is no user with email ${req.body.email}`, 404)
