@@ -14,7 +14,7 @@ const {
   updateProductValidator,
   deleteProductByIdValidator,
 } = require("../Resuble/ProductsvalidatorError");
-const RoutesReviews = require("./RoutesReviews");
+const RoutesReviews = require("./RoutesSubCategories");
 const { protect, allowedTo } = require("../Services/AuthService");
 
 const Routes = Router({ mergeParams: true });

@@ -6,7 +6,6 @@ const {
   updateReview,
   deleteReview,
   createReveiwOnProduct,
-  createFilterObject,
 } = require("../Services/ReviewsService");
 const { protect, allowedTo } = require("../Services/AuthService");
 const {
@@ -26,7 +25,7 @@ Routes.route("/")
     createReviewsValidator,
     createReviews
   )
-  .get(createFilterObject,getReviews);
+  .get(getReviews);
 Routes.route("/:id").get(getReviewByIdValidator, getReviewById);
 Routes.route("/:id").put(
   protect,

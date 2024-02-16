@@ -22,7 +22,7 @@ exports.getAll = (Model, keyword) =>
       fillter = req.filterObject
     }
     const countDocs = await Model.countDocuments();
-    const ApiFeatures = new FeatureApi(Model.find(fillter), req.query)
+    const ApiFeatures = new FeatureApi(Model.find(Fillter), req.query)
       .Fillter()
       .Sort()
       .Fields()

@@ -18,7 +18,7 @@ const RoutesReviews = require("./RoutesReviews");
 const { protect, allowedTo } = require("../Services/AuthService");
 
 const Routes = Router({ mergeParams: true });
-Routes.use("/:productId/review", RoutesReviews);
+
 Routes.route("/")
   .get(getProducts)
   .post(
@@ -30,7 +30,7 @@ Routes.route("/")
     createProductsValidator,
     createProducts
   );
-
+  Routes.use("/:productId/review", RoutesReviews);
 Routes.route("/:id")
   .get(getProduct)
   .put(

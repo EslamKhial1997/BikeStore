@@ -14,11 +14,10 @@ const {
   updateProductValidator,
   deleteProductByIdValidator,
 } = require("../Resuble/ProductsvalidatorError");
-const RoutesReviews = require("./RoutesReviews");
 const { protect, allowedTo } = require("../Services/AuthService");
 
 const Routes = Router({ mergeParams: true });
-Routes.use("/:productId/review", RoutesReviews);
+Routes.use("/:productId/review", RoutesSubCategories);
 Routes.route("/")
   .get(getProducts)
   .post(

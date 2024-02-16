@@ -5,8 +5,6 @@ const {
   getReviewById,
   updateReview,
   deleteReview,
-  createReveiwOnProduct,
-  createFilterObject,
 } = require("../Services/ReviewsService");
 const { protect, allowedTo } = require("../Services/AuthService");
 const {
@@ -16,17 +14,11 @@ const {
   deleteReviewValidator,
 } = require("../Resuble/ReviewValidator");
 
-const Routes = Router({ mergeParams: true });
+const Routes = Router();
 
 Routes.route("/")
-  .post(
-    protect,
-    allowedTo("user"),
-    createReveiwOnProduct,
-    createReviewsValidator,
-    createReviews
-  )
-  .get(createFilterObject,getReviews);
+  .post(protect, allowedTo("user"),createReveiwOnProduct, createReviewsValidator, createReviews)
+  .get(getReviews);
 Routes.route("/:id").get(getReviewByIdValidator, getReviewById);
 Routes.route("/:id").put(
   protect,

@@ -6,7 +6,6 @@ const {
   updateReview,
   deleteReview,
   createReveiwOnProduct,
-  createFilterObject,
 } = require("../Services/ReviewsService");
 const { protect, allowedTo } = require("../Services/AuthService");
 const {

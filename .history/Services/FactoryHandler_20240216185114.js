@@ -17,12 +17,9 @@ exports.createOne = (Model) =>
   });
 exports.getAll = (Model, keyword) =>
   expressAsyncHandler(async (req, res) => {
-    let fillter = {}
-    if (req.filterObject) {
-      fillter = req.filterObject
-    }
+    if
     const countDocs = await Model.countDocuments();
-    const ApiFeatures = new FeatureApi(Model.find(fillter), req.query)
+    const ApiFeatures = new FeatureApi(Model.find(), req.query)
       .Fillter()
       .Sort()
       .Fields()

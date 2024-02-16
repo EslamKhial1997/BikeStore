@@ -1,3 +1,0 @@
-const factory
-
-exports createReviews =

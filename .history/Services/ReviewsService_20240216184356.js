@@ -9,9 +9,8 @@ exports.createReveiwOnProduct = (req, res, next) => {
 };
 exports.createFilterObject = (req, res, next) => {
   let filterReviews = {};
-  if (req.params.productId) filterReviews = { product: req.params.productId };
+  if (req.params.product) filterReviews = { product: req.params.productId };
   req.filterObject = filterReviews;
-  console.log(filterReviews);
   next();
 };
 exports.createReviews = factory.createOne(createReviewsModel);

@@ -11,7 +11,6 @@ exports.createFilterObject = (req, res, next) => {
   let filterReviews = {};
   if (req.params.productId) filterReviews = { product: req.params.productId };
   req.filterObject = filterReviews;
-  console.log(filterReviews);
   next();
 };
 exports.createReviews = factory.createOne(createReviewsModel);
