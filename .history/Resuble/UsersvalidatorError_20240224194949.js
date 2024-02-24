@@ -112,16 +112,16 @@ exports.updateLoggedUserValidator = [
       req.body.slug = slugify(val);
       return true;
     }),
-  // body("email")
-  //   .optional() .isEmail()
-  //   .withMessage("Invalid email address")
-  //   .custom((val) =>
-  //     createUsersModel.findOne({ email: val }).then((user) => {
-  //       if (user) {
-  //         return Promise.reject(new Error("E-mail already in user"));
-  //       }
-  //     })
-  //   ),
+  body("email")
+    .optional() .isEmail()
+    .withMessage("Invalid email address")
+    .custom((val) =>
+      createUsersModel.findOne({ email: val }).then((user) => {
+        if (user) {
+          return Promise.reject(new Error("E-mail already in user"));
+        }
+      })
+    ),
   body("phone")
     .optional()
     .isMobilePhone(["ar-EG", "ar-SA"])

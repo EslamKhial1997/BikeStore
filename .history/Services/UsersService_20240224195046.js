@@ -107,24 +107,22 @@ exports.deleteLoggedUserData = expressAsyncHandler(async (req, res, next) => {
   res.status(204).json({ status: "Success" });
 });
 
-exports.createpasswordDashboard = expressAsyncHandler(
-  async (req, res, next) => {
-    const user = await createUsersModel.findOne({ email: req.user.email });
-    if (!user) {
-      return next(new ApiError(`This Email ${req.body.email} Not Exist `));
-    }
-    if (user.role === "user") {
-      return next(
-        new ApiError("You are not allowed to access this route", 403)
-      );
-    }
-    user.passwordDB = await bcrypt.hash(req.body.passwordDB, 12);
-    await user.save();
-    res
-      .status(200)
-      .json({ status: "success", massage: "Password Created successfully" });
+exports.createpasswordDashboard = expressAsyncHandler(async (req, res, next) => {
+  const user = await createUsersModel.findOne({ email: req.user.email });
+  if (!user) {
+    return next(new ApiError(`This Email ${req.body.email} Not Exist `));
   }
-);
+if (user.role === "user") {
+  return next(
+    new ApiError("You are not allowed to access this route", 403)
+  );
+}
+  user.passwordDB = await bcrypt.hash(req.body.passwordDB, 12);
+  await user.save();
+  res
+    .status(200)
+    .json({ status: "success", massage: "Password Created successfully" });
+});
 exports.updatePasswordDashboard = expressAsyncHandler(
   async (req, res, next) => {
     const updatepasswordDashboardById =
@@ -159,7 +157,7 @@ exports.updateLoggedUserPasswordDashboard = expressAsyncHandler(
       }
     );
     res.status(200).json({ data: user });
-  }
+  } 
 );
 exports.LoginDashboard = expressAsyncHandler(async (req, res, next) => {
   const user = await createUsersModel.findOne({

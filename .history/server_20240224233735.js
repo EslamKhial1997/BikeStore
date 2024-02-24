@@ -11,7 +11,7 @@ const RoutesProducts = require("./Routes/RoutesProducts");
 const RoutesUsers = require("./Routes/RoutesUsers");
 const RoutesAuth = require("./Routes/RoutesAuth");
 const RoutesReviews = require("./Routes/RoutesReviews");
-const RoutesCart = require("./Routes/RoutesCarts");
+const RoutesReviews = require("./Routes/RoutesReviews");
 const ApiError = require("./Resuble/ApiErrors");
 const globalError = require("./Middleware/globalError");
 
@@ -32,7 +32,7 @@ app.use("/api/v1/brands", RoutesBrands);
 app.use("/api/v1/products", RoutesProducts);
 app.use("/api/v1/auth", RoutesAuth);
 app.use("/api/v1/review", RoutesReviews);
-app.use("/api/v1/cart", RoutesCart);
+app.use("/api/v1/cart", RoutesReviews);
 app.use(express.static(path.join(__dirname,"uploads")))
 
 const PORT = process.env.PORT || 8008;   

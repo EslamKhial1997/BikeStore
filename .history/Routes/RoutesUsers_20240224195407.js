@@ -50,7 +50,7 @@ Routes.put("/changePassword/:id", UpdateUserPassword, updatePassword);
 Routes.put("/changeUserPassword", updateLoggedUserPassword);
 Routes.post("/forgetPassword", forgetPassword);
 Routes.post("/restCode", restCodeSent);
-Routes.patch("/restNewPasswordDashboard", restNewPassword("passwordDB"));
+Routes.put("/restNewPasswordDashboard", restNewPassword("passwordDB"));
 // Only Access the Admin
 Routes.use(allowedTo("admin", "manger"));
 Routes.route("/createpasswordDashboard").post(createpasswordDashboard);

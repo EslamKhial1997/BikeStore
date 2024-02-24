@@ -38,7 +38,7 @@ const Routes = Router();
 // Only Access the Logged Users
 Routes.use(protect);
 Routes.get("/getMe", getLoggedUserData, getUser);
-Routes.patch(
+Routes.(
   "/updateMe",
   uploadImage,
   resizeImageUsers,
@@ -50,7 +50,7 @@ Routes.put("/changePassword/:id", UpdateUserPassword, updatePassword);
 Routes.put("/changeUserPassword", updateLoggedUserPassword);
 Routes.post("/forgetPassword", forgetPassword);
 Routes.post("/restCode", restCodeSent);
-Routes.patch("/restNewPasswordDashboard", restNewPassword("passwordDB"));
+Routes.put("/restNewPasswordDashboard", restNewPassword("passwordDB"));
 // Only Access the Admin
 Routes.use(allowedTo("admin", "manger"));
 Routes.route("/createpasswordDashboard").post(createpasswordDashboard);
@@ -61,6 +61,6 @@ Routes.route("/")
   .get(getUsers);
 Routes.route("/:id")
   .get(getOneUserValidator, getUser)
-  .patch(uploadImage, resizeImageUsers, updateOneUserValidator, updateUser)
+  .put(uploadImage, resizeImageUsers, updateOneUserValidator, updateUser)
   .delete(deleteOneUserValidator, deleteUser);
 module.exports = Routes;

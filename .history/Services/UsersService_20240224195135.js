@@ -92,9 +92,7 @@ exports.updateLoggedUserData = expressAsyncHandler(async (req, res, next) => {
   const updatedUser = await createUsersModel.findByIdAndUpdate(
     req.user._id,
     {
-      name: req.body.name,
-      phone: req.body.phone,
-      imageProfile: req.body.imageProfile,
+     req
     },
     { new: true }
   );
