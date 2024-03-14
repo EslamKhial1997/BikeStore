@@ -47,11 +47,11 @@ const createUsers = new mongoose.Schema(
     addresses: [
       {
         id: { type: mongoose.Schema.Types.ObjectId },
-        alias: String,
-        details: String,
-        phone: Number,
-        city: String,
-        postalCode: Number,
+        alias:String ,
+        details:String,
+        phone:String,
+        city:String,
+postalCode: String
       },
     ],
     passwordResthashedCode: {

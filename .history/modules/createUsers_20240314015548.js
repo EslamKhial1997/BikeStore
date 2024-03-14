@@ -45,6 +45,9 @@ const createUsers = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
+    address:[{
+      
+    }]
     passwordResthashedCode: {
       type: String,
     },
@@ -57,6 +60,8 @@ const createUsers = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
 const ImageURL = (doc) => {
   if (doc.imageProfile) {
     const image = `${process.env.BASE_URL}/users/${doc.imageProfile}`;

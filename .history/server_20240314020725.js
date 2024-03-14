@@ -16,7 +16,7 @@ const RoutesReviews = require("./Routes/RoutesReviews");
 const RouteCart = require("./Routes/RoutesCarts");
 
 const RoutesFavorite = require("./Routes/RoutesFavorite");
-const RoutesAddress = require("./Routes/RoutesAddresses");
+const RoutesFavorite = require("./Routes/RoutesFavorite");
 const ApiError = require("./Resuble/ApiErrors");
 const globalError = require("./Middleware/globalError");
 

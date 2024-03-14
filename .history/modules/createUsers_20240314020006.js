@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const createUsers = new mongoose.Schema(
   {
@@ -45,6 +44,16 @@ const createUsers = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
+    address: [
+      {
+        id: { type: mongoose.Schema.Types.ObjectId },
+        alias:String ,
+        details:String,
+        phone:String,
+        city:String,
+postal
+      },
+    ],
     passwordResthashedCode: {
       type: String,
     },
@@ -57,6 +66,7 @@ const createUsers = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 const ImageURL = (doc) => {
   if (doc.imageProfile) {
     const image = `${process.env.BASE_URL}/users/${doc.imageProfile}`;

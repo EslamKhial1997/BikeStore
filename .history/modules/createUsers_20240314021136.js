@@ -51,7 +51,7 @@ const createUsers = new mongoose.Schema(
         details: String,
         phone: Number,
         city: String,
-        postalCode: Number,
+        postalCode: String,
       },
     ],
     passwordResthashedCode: {

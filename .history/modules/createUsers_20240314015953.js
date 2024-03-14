@@ -44,14 +44,15 @@ const createUsers = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
-    addresses: [
+    address: [
       {
         id: { type: mongoose.Schema.Types.ObjectId },
-        alias: String,
-        details: String,
-        phone: Number,
-        city: String,
-        postalCode: Number,
+        alias:String ,
+        details:String,
+        phone:String,
+        ciry:String,
+        ciry:String,
+
       },
     ],
     passwordResthashedCode: {

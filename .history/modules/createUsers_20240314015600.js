@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const createUsers = new mongoose.Schema(
   {
     name: {
@@ -44,16 +45,9 @@ const createUsers = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
-    addresses: [
-      {
-        id: { type: mongoose.Schema.Types.ObjectId },
-        alias: String,
-        details: String,
-        phone: Number,
-        city: String,
-        postalCode: Number,
-      },
-    ],
+    address:[{
+      type:mongoose.
+    }]
     passwordResthashedCode: {
       type: String,
     },
@@ -66,6 +60,7 @@ const createUsers = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 
 const ImageURL = (doc) => {
   if (doc.imageProfile) {

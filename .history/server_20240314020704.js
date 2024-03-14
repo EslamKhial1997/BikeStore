@@ -16,7 +16,6 @@ const RoutesReviews = require("./Routes/RoutesReviews");
 const RouteCart = require("./Routes/RoutesCarts");
 
 const RoutesFavorite = require("./Routes/RoutesFavorite");
-const RoutesAddress = require("./Routes/RoutesAddresses");
 const ApiError = require("./Resuble/ApiErrors");
 const globalError = require("./Middleware/globalError");
 
@@ -39,7 +38,7 @@ app.use("/api/v1/auth", RoutesAuth);
 app.use("/api/v1/cart", RouteCart);
 app.use("/api/v1/review", RoutesReviews);
 app.use("/api/v1/favorite", RoutesFavorite);
-app.use("/api/v1/address", RoutesAddress);
+app.use("/api/v1/address", RoutesFavorite);
 app.use(express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 8008;

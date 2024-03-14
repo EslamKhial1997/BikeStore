@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const createUsers = new mongoose.Schema(
   {
@@ -25,7 +24,7 @@ const createUsers = new mongoose.Schema(
     },
     passwordDB: {
       type: String,
-      length: [6, "Password DashBoard Too Short To Create"],
+      minlength: [6, "Password DashBoard Too Short To Create"],
     },
     passwordTimeUpdate: Date,
     phone: {
@@ -45,6 +44,17 @@ const createUsers = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
+    address: [
+      {
+        id: { type: mongoose.Schema.Types.ObjectId },
+        alias:String ,
+        details:String,
+        phone:String,
+        city:String,
+        ciry:String,
+
+      },
+    ],
     passwordResthashedCode: {
       type: String,
     },
@@ -57,6 +67,7 @@ const createUsers = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 const ImageURL = (doc) => {
   if (doc.imageProfile) {
     const image = `${process.env.BASE_URL}/users/${doc.imageProfile}`;
@@ -69,13 +80,9 @@ createUsers.post("init", (doc) => {
 createUsers.post("save", (doc) => {
   ImageURL(doc);
 });
-createUsers.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
-createUsers.pre("save", async function (next) {
-  this.passwordDB = await bcrypt.hash(this.passwordDB, 12);
-  next();
-});
+// createUsers.pre("save", async function (next) {
+//   this.password = await bcrypt.hash(this.password, 12);
+//   next();
+// });
 const createUsersModel = mongoose.model("Users", createUsers);
 module.exports = createUsersModel;

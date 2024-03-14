@@ -49,9 +49,9 @@ const createUsers = new mongoose.Schema(
         id: { type: mongoose.Schema.Types.ObjectId },
         alias: String,
         details: String,
-        phone: Number,
+        phone: String,
         city: String,
-        postalCode: Number,
+        postalCode: String,
       },
     ],
     passwordResthashedCode: {
