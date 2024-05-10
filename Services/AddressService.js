@@ -31,7 +31,7 @@ exports.removeAddress = expressAsyncHandler(async (req, res, next) => {
     {
       $pull: { addresses: { _id: req.params.addressId } },
     },
-    { new: true } 
+    { new: true }
   );
 
   res.status(200).json({
