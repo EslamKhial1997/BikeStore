@@ -1,0 +1,54 @@
+const expressAsyncHandler = require("express-async-handler");
+const ApiError = require("../Resuble/ApiErrors");
+const createCartModel = require("../modules/createCart");
+const stripe = require("stripe")(
+  "sk_test_51PEe152KGkCg4TkVHgE9Ed2Fn70GpAhEloT20OIMV9N03x9Msda4frZxpVlSfMgec1QxbTSW2SoqvTWeGTIGn4L100KEVeOXN9"
+);
+
+exports.createPayment = expressAsyncHandler(async (req, res, next) => {
+  console.log(req.user._id);
+  // app settings
+  const taxPrice = 0;
+  const shippingPrice = 0;
+
+  // 1) Get cart depend on cartId
+  const cart = await createCartModel.findById(req.params.cartId);
+  if (!cart) {
+    return next(
+      new ApiError(`There is no such cart with id ${req.params.cartId}`, 404)
+    );
+  }
+console.log(cart.cartItems[0].product.imageCover);
+  // 2) Get order price depend on cart price "Check if coupon apply"
+  const cartPrice = cart.totalPriceAfterDiscount
+    ? cart.totalPriceAfterDiscount
+    : cart.totalCartPrice;
+
+  const totalOrderPrice = cartPrice + taxPrice + shippingPrice;
+  // 3) Create stripe checkout session
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "egp",
+          product_data: {
+            name: "",
+            images: ["http://93.127.215.9:5000/categories/category-818b5c25-5bf6-4075-b605-984c5889a3fc-1715287732267.png"],
+          },
+          unit_amount: totalOrderPrice * 10,
+        },
+
+        quantity: cart.cartItems[0].quantity,
+      },
+    ],
+    mode: "payment",
+    customer: req.user._id,
+    success_url: `${req.protocol}://${req.get("host")}/orders`,
+    cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+    customer_email: req.user.email,
+    client_reference_id: req.params.cartId,
+    metadata: req.body.shippingAddress,
+  });
+  res.status(200).json({ status: "success", session });
+});
