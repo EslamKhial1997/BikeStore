@@ -1,0 +1,15 @@
+const expressAsyncHandler = require("express-async-handler");
+const { cloudinaryConfig } = require("../Config/cloudinary");
+
+exports.UploadToCloudinary = async(file, res, next) => {
+  
+  const uploadResult = await cloudinaryConfig.uploader
+    .upload(req.file.path, {
+      public_id: "shoes",
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  // next()
+  console.log(uploadResult);
+};
